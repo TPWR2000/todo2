@@ -1,16 +1,18 @@
-# This is a sample Python script.
+"""Application entry point for the Task Manager."""
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+8 to toggle the breakpoint.
+from repositories.task_repository import SqliteTaskRepository
+from services.task_service import TaskService
+from ui.main_window import TaskManagerWindow
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def main() -> None:
+    """Configure the application and start the Tkinter event loop."""
+    repository = SqliteTaskRepository("task_manager.db")
+    service = TaskService(repository)
+    window = TaskManagerWindow(service)
+    window.protocol("WM_DELETE_WINDOW", window.close_application)
+    window.mainloop()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+if __name__ == "__main__":
+    main()
